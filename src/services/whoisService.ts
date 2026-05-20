@@ -1,3 +1,5 @@
+import { isPrivateIp } from './ipService';
+
 export interface ParsedWhois {
   name: string; // Domain name or Net range
   status: string[];
@@ -68,6 +70,20 @@ function parseEntities(entities: any[], parsed: Partial<ParsedWhois>) {
  */
 export async function fetchWhoisData(query: string, type: 'domain' | 'ip'): Promise<WhoisData> {
   const trimmed = query.trim().toLowerCase();
+
+  // Instantly handle private/loopback IPs to avoid useless external API requests and 400 errors
+  if (type === 'ip' && isPrivateIp(trimmed)) {
+    return {
+      parsed: {
+        name: query,
+        status: ['private-range'],
+        networkRange: 'Local Loopback / Private IP Space',
+        networkName: 'Local/Private Network Range',
+      },
+      raw: { message: 'WHOIS/RDAP queries are not supported for private IP addresses.' }
+    };
+  }
+
   const url = type === 'domain' 
     ? `https://rdap.org/domain/${encodeURIComponent(trimmed)}`
     : `https://rdap.org/ip/${encodeURIComponent(trimmed)}`;
@@ -81,7 +97,14 @@ export async function fetchWhoisData(query: string, type: 'domain' | 'ip'): Prom
     });
 
     if (!response.ok) {
-      throw new Error(`RDAP server returned status ${response.status}`);
+      // Return a clean fallback object instead of throwing, which Next.js dev server intercepts and crashes the overlay
+      return {
+        parsed: {
+          name: query,
+          status: [],
+        },
+        raw: { error: `RDAP server returned status ${response.status}` },
+      };
     }
 
     const data = await response.json();
