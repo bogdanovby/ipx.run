@@ -34,7 +34,17 @@ export default function DigCard({ initialDomain }: DigCardProps) {
       let clean = initialDomain.trim().toLowerCase();
       clean = clean.replace(/^(https?:\/\/)?(www\.)?/, '');
       clean = clean.split('/')[0];
-      setDomain(clean);
+      
+      // If the target is an IP address, we cannot do standard domain DNS queries on it.
+      // Default to google.com to avoid showing 400 Bad Request error screens.
+      const isIp = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(clean) || clean.includes(':');
+      if (isIp) {
+        setDomain('google.com');
+      } else {
+        setDomain(clean);
+      }
+    } else {
+      setDomain('google.com');
     }
   }, [initialDomain]);
 
