@@ -171,60 +171,60 @@ export default function Dashboard({ initialData, userAgent }: DashboardProps) {
         </AnimatePresence>
 
         {/* Segmented Glass Navigation Tabs */}
-        <div className="flex items-center gap-1 p-1 rounded-xl bg-border-muted/10 border border-card-border/30 backdrop-blur-sm self-start max-w-full overflow-x-auto scrollbar-none select-none">
+        <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-1.5 p-1.5 rounded-xl bg-border-muted/10 border border-card-border/30 backdrop-blur-sm self-start w-full md:w-auto select-none">
           <button
             onClick={() => setActiveTab('geolocation')}
-            className={`px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 shrink-0 transition-all duration-300 cursor-pointer ${
+            className={`col-span-2 md:col-span-1 justify-center px-4 py-2.5 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
               activeTab === 'geolocation'
                 ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
                 : 'text-text-muted hover:text-foreground hover:bg-border-muted/20'
             }`}
           >
-            <Search className="w-4 h-4" />
+            <Search className="w-4 h-4 shrink-0" />
             Geolocation & Security
           </button>
           <button
             onClick={() => setActiveTab('dns')}
-            className={`px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 shrink-0 transition-all duration-300 cursor-pointer ${
+            className={`justify-center px-4 py-2.5 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
               activeTab === 'dns'
                 ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
                 : 'text-text-muted hover:text-foreground hover:bg-border-muted/20'
             }`}
           >
-            <Database className="w-4 h-4" />
+            <Database className="w-4 h-4 shrink-0" />
             DNS Records
           </button>
           <button
             onClick={() => setActiveTab('whois')}
-            className={`px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 shrink-0 transition-all duration-300 cursor-pointer ${
+            className={`justify-center px-4 py-2.5 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
               activeTab === 'whois'
                 ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
                 : 'text-text-muted hover:text-foreground hover:bg-border-muted/20'
             }`}
           >
-            <ShieldCheck className="w-4 h-4" />
+            <ShieldCheck className="w-4 h-4 shrink-0" />
             WHOIS Lookup
           </button>
           <button
             onClick={() => setActiveTab('ping')}
-            className={`px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 shrink-0 transition-all duration-300 cursor-pointer ${
+            className={`justify-center px-4 py-2.5 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
               activeTab === 'ping'
                 ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
                 : 'text-text-muted hover:text-foreground hover:bg-border-muted/20'
             }`}
           >
-            <Activity className="w-4 h-4" />
+            <Activity className="w-4 h-4 shrink-0" />
             Ping Latency
           </button>
           <button
             onClick={() => setActiveTab('dig')}
-            className={`px-4 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 shrink-0 transition-all duration-300 cursor-pointer ${
+            className={`justify-center px-4 py-2.5 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
               activeTab === 'dig'
                 ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
                 : 'text-text-muted hover:text-foreground hover:bg-border-muted/20'
             }`}
           >
-            <Terminal className="w-4 h-4" />
+            <Terminal className="w-4 h-4 shrink-0" />
             Dig DNS
           </button>
         </div>
