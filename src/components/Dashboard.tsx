@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Network, Search, AlertCircle, RefreshCw, Cpu, Database, ShieldCheck, Activity, Terminal, Github } from 'lucide-react';
+import { Network, Search, AlertCircle, RefreshCw, Cpu, Database, ShieldCheck, Activity, Terminal } from 'lucide-react';
 import SearchBar from './SearchBar';
 import ThemeToggle from './ThemeToggle';
 import ConnectionCard from './Cards/ConnectionCard';
@@ -369,7 +369,10 @@ export default function Dashboard({ initialData, userAgent }: DashboardProps) {
             </span>
             <span className="hidden sm:inline text-card-border">•</span>
             <a href="https://github.com/bogdanovby/ipx.run" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors duration-150">
-              <Github className="w-3.5 h-3.5" />
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.03c3.15-.38 6.5-1.4 6.5-7.17A5.1 5.1 0 0 0 19 5.8a4.9 4.9 0 0 0-.5-3.1s-1.2-.4-3.9 2.1a13.9 13.9 0 0 0-7 0C4.9 2.3 3.7 2.7 3.7 2.7a4.9 4.9 0 0 0-.5 3.1 5.1 5.1 0 0 0-2 3.8c0 5.8 3.3 6.8 6.5 7.2A4.8 4.8 0 0 0 8 18v4" />
+                <path d="M9 18c-4.51 2-5-2-7-2" />
+              </svg>
               Open Source
             </a>
           </div>
