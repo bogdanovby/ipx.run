@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Network, Search, AlertCircle, RefreshCw, Cpu, Database, ShieldCheck, Activity, Terminal } from 'lucide-react';
+import { Network, Search, AlertCircle, RefreshCw, Cpu, Database, ShieldCheck, Activity, Terminal, Github } from 'lucide-react';
 import SearchBar from './SearchBar';
 import ThemeToggle from './ThemeToggle';
 import ConnectionCard from './Cards/ConnectionCard';
@@ -362,17 +362,24 @@ export default function Dashboard({ initialData, userAgent }: DashboardProps) {
 
       {/* Simple, sleek tech Footer */}
       <footer className="w-full mt-auto text-center py-6 text-[11px] font-medium text-text-muted tracking-wide z-10 border-t border-card-border/30 bg-background/20 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-          <div>
-            &copy; {new Date().getFullYear()} <span className="font-extrabold text-foreground">ipx.run</span>. All rights reserved.
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <span>
+              &copy; {new Date().getFullYear()} <span className="font-extrabold text-foreground">ipx.run</span>. All rights reserved.
+            </span>
+            <span className="hidden sm:inline text-card-border">•</span>
+            <a href="https://github.com/bogdanovby/ipx.run" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors duration-150">
+              <Github className="w-3.5 h-3.5" />
+              Open Source
+            </a>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="https://livemy.app/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-150">
-              Hosted by livemy.app
+          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2">
+            <a href="https://livemy.app/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-150 flex items-center gap-1">
+              Hosted by <span className="font-semibold">livemy.app</span>
             </a>
             <span className="text-card-border">•</span>
-            <a href="https://bahdanau.pl" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-150">
-              Created by bahdanau.pl
+            <a href="https://bahdanau.pl" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-150 flex items-center gap-1">
+              Created by <span className="font-semibold">Pavel Bahdanau</span>
             </a>
           </div>
         </div>
