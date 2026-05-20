@@ -1,76 +1,76 @@
-# ipx.run — Premium Network Analysis Dashboard
+# ipx.run - Premium Network Analysis Dashboard
 
-**ipx.run** — это современная, высокотехнологичная панель для сетевого анализа и диагностики IP-адресов и доменных имен. Интерфейс выполнен в премиальном стиле с использованием эффектов стекломорфизма (glassmorphism), плавных микроанимаций (`framer-motion`) и интерактивной карты.
+ipx.run is a modern, high-tech dashboard for network analysis and diagnostics of IP addresses and domain names. The interface features a premium design with glassmorphism effects, smooth micro-animations (using framer-motion), and an interactive map.
 
-Проект поддерживает 5 основных модулей:
-1. **Геолокация и безопасность (Geolocation & Security)**: Определение координат, провайдера (ISP), автономной системы (ASN), а также проверки на прокси, VPN, Tor и спам-базы.
-2. **DNS-записи (DNS Records)**: Параллельный опрос и парсинг стандартных записей домена (A, AAAA, MX, TXT, NS, CNAME).
-3. **Реестр WHOIS (WHOIS Lookup)**: Извлечение регистрационных данных через современный протокол IETF RDAP (Registration Data Access Protocol) с интерактивным просмотром сырого JSON.
-4. **Интерактивный Ping (Ping Latency)**: Построчная трансляция пинга в реальном времени через Server-Sent Events (SSE), визуальный анализатор волн задержки и автоматический расчет метрик RTT.
-5. **Продвинутый Dig (Dig DNS)**: Полнофункциональная замена консольной утилиты `dig`. Позволяет выполнять запросы к Google (8.8.8.8), Cloudflare (1.1.1.1), OpenDNS (208.67.222.222) или напрямую к **авторитетным серверам имен домена (Authoritative Nameservers)** с разделением на структурированную таблицу и консольный вид.
+The project supports 5 core modules:
+1. Geolocation & Security: Detects coordinates, Internet Service Provider (ISP), Autonomous System Number (ASN), and runs checks for proxies, VPNs, Tor exit nodes, and spam databases.
+2. DNS Records: Performs parallel queries and parses standard domain records (A, AAAA, MX, TXT, NS, CNAME).
+3. WHOIS Lookup: Retrieves domain registration and network allocation data via the modern IETF RDAP (Registration Data Access Protocol) with an interactive raw JSON viewer.
+4. Interactive Ping (Ping Latency): Live streaming of ping output in real-time using Server-Sent Events (SSE), a visual latency wave analyzer, and automatic RTT metric calculations.
+5. Advanced Dig (Dig DNS): A fully featured replacement for the command-line dig utility. It queries public resolvers like Google (8.8.8.8), Cloudflare (1.1.1.1), OpenDNS (208.67.222.222), or domain authoritative nameservers, presenting results in both structured tables and raw console logs.
 
 ---
 
-## 🛠️ Требования к системе и окружению
+## System Requirements and Environment
 
-Для полноценного функционирования проекта требуются следующие компоненты:
+To ensure all features work correctly, the following components are required:
 
-### 1. Среда исполнения (Runtime)
-* **Node.js**: Версия `18.x` или выше (рекомендуется LTS-версия `20.x` / `22.x`).
-* **npm** (поставляется с Node.js) или альтернативные менеджеры пакетов (Yarn / pnpm / Bun).
+### 1. Runtime Environment
+* Node.js: Version 18.x or higher (LTS versions 20.x / 22.x are recommended).
+* npm (comes with Node.js) or alternative package managers (Yarn / pnpm / Bun).
 
-### 2. Системные утилиты (System Binaries)
-Для высокой точности и аутентичности модули **Ping** и **Dig** используют системные исполняемые файлы. Убедитесь, что они установлены в вашей системе:
+### 2. System Binaries
+For maximum accuracy and native output, the Ping and Dig modules execute system-level binaries. Ensure they are installed on your host system:
 
-* **Linux (Debian / Ubuntu / Linux Mint)**:
+* Linux (Debian / Ubuntu / Linux Mint):
   ```bash
   sudo apt update
   sudo apt install -y iputils-ping dnsutils
   ```
-* **Linux (CentOS / RHEL / Rocky Linux / Fedora)**:
+* Linux (CentOS / RHEL / Rocky Linux / Fedora):
   ```bash
   sudo dnf install -y iputils bind-utils
   ```
-* **macOS**:
-  * Пинг (`ping`) встроен в систему по умолчанию.
-  * Для утилиты `dig` установите пакет `bind`:
+* macOS:
+  * Ping (ping) is built into the system by default.
+  * For the dig utility, install the bind package:
     ```bash
     brew install bind
     ```
-* **Windows**:
-  * Проект разработан с расчетом на Unix-подобные серверы. Для полноценного запуска на Windows рекомендуется использовать **WSL** (Windows Subsystem for Linux) с дистрибутивом Ubuntu.
+* Windows:
+  * The project is designed for Unix-like environments. To run it on Windows, it is highly recommended to use WSL (Windows Subsystem for Linux) with an Ubuntu distribution.
 
-#### 🛡️ Встроенные фоллбеки (Устойчивость к облачному хостингу)
-Если проект разворачивается в serverless-окружении (например, Vercel) или контейнерах, где запуск бинарных файлов ограничен:
-* **Пинг** автоматически переключается в режим **TCP-PING** (измеряет задержку TCP-рукопожатия на порты 80/443 через сокеты Node.js `net`).
-* **Dig** автоматически переключается на встроенный в Node.js асинхронный DNS-резолвер `dns/promises`, генерируя аналогичный лог для терминала.
+#### Built-in Resilient Fallbacks (Cloud Hosting Compatibility)
+If the project is deployed in a serverless environment (such as Vercel) or inside containers where running system binaries is restricted:
+* Ping automatically falls back to TCP-PING mode (measuring TCP handshake latency on ports 80/443 using native Node.js net sockets).
+* Dig automatically falls back to Node.js's built-in asynchronous DNS resolver (dns/promises), generating a matching log format for the terminal.
 
 ---
 
-## 🚀 Быстрый запуск
+## Quick Start
 
-### 1. Клонирование репозитория
-Клонируйте проект с GitHub:
+### 1. Clone the Repository
+Clone the project from GitHub:
 ```bash
-git clone https://github.com/YOUR_USERNAME/ipx.run.git
+git clone https://github.com/bogdanovby/ipx.run.git
 cd ipx.run
 ```
 
-### 2. Установка зависимостей
-Установите необходимые NPM-пакеты:
+### 2. Install Dependencies
+Install the required NPM packages:
 ```bash
 npm install
 ```
 
-### 3. Запуск в режиме разработки
-Запустите локальный сервер разработки:
+### 3. Run in Development Mode
+Start the local development server:
 ```bash
 npm run dev
 ```
-После запуска откройте в браузере страницу [http://localhost:3000](http://localhost:3000). Локальный сервер поддерживает горячую перезагрузку (Hot Module Replacement) при редактировании файлов.
+Open [http://localhost:3000](http://localhost:3000) in your browser. The server supports Hot Module Replacement (HMR) on file saves.
 
-### 4. Сборка и запуск в продакшене
-Для сборки оптимизированного и готового к продакшену бандла выполните:
+### 4. Build and Run in Production
+To build an optimized, production-ready bundle:
 ```bash
 npm run build
 npm run start
@@ -78,24 +78,25 @@ npm run start
 
 ---
 
-## 📂 Структура проекта
+## Project Structure
 
-* `src/services/` — логика запросов к API и системным утилитам:
-  * `ipService.ts` — парсинг геолокации и показателей безопасности.
-  * `whoisService.ts` — разбор vCard-объектов RDAP и форматирование дат реестра.
-  * `dnsService.ts` — стандартные запросы DNS-записей.
-  * `pingService.ts` — спавн системного пинга и TCP-фоллбек.
-  * `digService.ts` — выполнение dig-запросов и парсинг вывода.
-* `src/app/api/` — роуты бэкенд-эндпоинтов Next.js App Router:
-  * `api/ip/[ip]/route.ts` — основной сборщик информации по IP/Домену.
-  * `api/ping/route.ts` — стриминг пинга по протоколу Server-Sent Events (SSE).
-  * `api/dig/route.ts` — запуск и парсинг утилиты dig.
-* `src/components/` — интерактивные UI компоненты:
-  * `Dashboard.tsx` — главный дашборд с переключением вкладок и управлением состоянием.
-  * `Cards/` — визуальные карточки для каждого из модулей (включая `PingCard.tsx` и `DigCard.tsx`).
-* `src/app/globals.css` — стили Tailwind CSS v4 с объявлением кастомных переменных, градиентов сетки и эффектов стекломорфизма.
+* src/services/ - Logic for requests to APIs and system binaries:
+  * ipService.ts - Geolocation parsing and security scoring.
+  * whoisService.ts - RDAP vCard parsing and registry date formatting.
+  * dnsService.ts - Standard DNS record lookups.
+  * pingService.ts - Subprocess spawning for system ping and TCP fallback.
+  * digService.ts - Execution of dig queries and stdout parsing.
+* src/app/api/ - Routes for Next.js App Router API endpoints:
+  * api/ip/[ip]/route.ts - Unified payload builder for IP/Domain lookups.
+  * api/ping/route.ts - Ping streaming over Server-Sent Events (SSE).
+  * api/dig/route.ts - Execution and parsing of the dig utility.
+* src/components/ - Interactive UI components:
+  * Dashboard.tsx - Main dashboard with tab switching and state management.
+  * Cards/ - Visual cards for each module (including PingCard.tsx and DigCard.tsx).
+* src/app/globals.css - Tailwind CSS v4 styling, custom theme variables, grids, and glassmorphic designs.
 
 ---
 
-## 🔒 Безопасность
-Поскольку проект работает с системными командами, все передаваемые параметры (домены, IP, типы записей и адреса nameservers) проходят **строгую валидацию** и экранирование по белым спискам в бэкенд-сервисах. Использование `execFile` вместо `exec` гарантирует полную неуязвимость к инъекциям команд оболочки (Command Injection), так как аргументы передаются ядру операционной системы напрямую в виде массива строк, минуя командный интерпретатор `/bin/sh`.
+## Security
+
+Since the project interacts with system-level commands, all inputs (domains, IPs, record types, and nameserver addresses) undergo strict white-list validation and escaping in the backend services. The use of execFile instead of exec ensures complete immunity to Shell Command Injection, as arguments are passed directly to the OS kernel as an array of strings, completely bypassing the /bin/sh command interpreter.
