@@ -82,9 +82,12 @@ export default function Map({ lat, lon, city, country }: MapProps) {
   const attribution =
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
+  const [mapId] = useState(() => `map-${Math.random().toString(36).substr(2, 9)}`);
+
   return (
     <div className="w-full h-full min-h-[350px] md:min-h-[400px] relative rounded-xl overflow-hidden border border-card-border shadow-inner">
       <MapContainer
+        key={mapId}
         center={[lat, lon]}
         zoom={11}
         scrollWheelZoom={false}

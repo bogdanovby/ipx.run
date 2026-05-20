@@ -37,8 +37,11 @@ export default async function Page() {
 
   // 2. Perform Reverse DNS (rDNS) resolution and WHOIS lookup in parallel on the server
   const [rDnsHostname, whoisData] = await Promise.all([
-    resolveReverseDns(ipDetails.ip),
-    fetchWhoisData(ipDetails.ip, 'ip'),
+    resolveReverseDns(ipDetails.ip).catch(() => null),
+    fetchWhoisData(ipDetails.ip, 'ip').catch((err) => {
+      console.warn(`[Page SSR] WHOIS failed for ${ipDetails.ip}:`, err.message);
+      return null;
+    }),
   ]);
 
   // Combine resolved properties
