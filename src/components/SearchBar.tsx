@@ -23,6 +23,24 @@ export default function SearchBar({ onSearch, isLoading, initialValue = '' }: Se
     setQuery(initialValue);
   }, [initialValue]);
 
+  const [placeholder, setPlaceholder] = useState('Search IP or domain...');
+
+  useEffect(() => {
+    const updatePlaceholder = () => {
+      if (window.innerWidth >= 768) {
+        setPlaceholder('Search IP address or domain (e.g. 8.8.8.8, google.com)');
+      } else if (window.innerWidth >= 480) {
+        setPlaceholder('Search IP or domain (e.g. 8.8.8.8)...');
+      } else {
+        setPlaceholder('Search IP or domain...');
+      }
+    };
+
+    updatePlaceholder();
+    window.addEventListener('resize', updatePlaceholder);
+    return () => window.removeEventListener('resize', updatePlaceholder);
+  }, []);
+
   const validateInput = (val: string) => {
     if (!val) {
       setIsValid(true);
@@ -63,7 +81,7 @@ export default function SearchBar({ onSearch, isLoading, initialValue = '' }: Se
     <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
       <div className="relative flex flex-col gap-2">
         <div 
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card transition-all duration-300 focus-within:ring-2 ${
+          className={`flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl glass-card transition-all duration-300 focus-within:ring-2 ${
             !isValid && isDirty
               ? 'ring-2 ring-red-500/30 border-red-500/50' 
               : 'focus-within:ring-brand-orange/20 focus-within:border-brand-orange/40'
@@ -78,8 +96,8 @@ export default function SearchBar({ onSearch, isLoading, initialValue = '' }: Se
             value={query}
             onChange={handleInputChange}
             disabled={isLoading}
-            placeholder="Search IP address or domain (e.g. 8.8.8.8, google.com)"
-            className="w-full bg-transparent border-none outline-none py-1 text-sm md:text-base placeholder-text-muted/65 text-foreground shrink min-w-0"
+            placeholder={placeholder}
+            className="w-full bg-transparent border-none outline-none py-1 text-sm md:text-base placeholder-text-muted/65 text-foreground shrink min-w-0 placeholder:truncate"
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
