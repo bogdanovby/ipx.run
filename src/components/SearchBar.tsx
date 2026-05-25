@@ -23,23 +23,8 @@ export default function SearchBar({ onSearch, isLoading, initialValue = '' }: Se
     setQuery(initialValue);
   }, [initialValue]);
 
-  const [placeholder, setPlaceholder] = useState('Search IP or domain...');
-
-  useEffect(() => {
-    const updatePlaceholder = () => {
-      if (window.innerWidth >= 768) {
-        setPlaceholder('Search IP address or domain (e.g. 8.8.8.8, google.com)');
-      } else if (window.innerWidth >= 480) {
-        setPlaceholder('Search IP or domain (e.g. 8.8.8.8)...');
-      } else {
-        setPlaceholder('Search IP or domain...');
-      }
-    };
-
-    updatePlaceholder();
-    window.addEventListener('resize', updatePlaceholder);
-    return () => window.removeEventListener('resize', updatePlaceholder);
-  }, []);
+  // Clean, elegant, and concise placeholder that fits beautifully on all screens and parent containers without clipping.
+  const placeholder = 'Search IP or domain...';
 
   const validateInput = (val: string) => {
     if (!val) {
