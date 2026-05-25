@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { performDig, isValidDomain } from '@/services/digService';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+
+const RATE_LIMIT = { limit: 5, windowMs: 60_000 };
 
 const ALLOWED_NAMESERVERS = ['8.8.8.8', '1.1.1.1', '208.67.222.222', 'authoritative'];
 
@@ -11,6 +14,20 @@ const ALLOWED_NAMESERVERS = ['8.8.8.8', '1.1.1.1', '208.67.222.222', 'authoritat
  *  - nameserver: string (target IP or 'authoritative')
  */
 export async function GET(request: NextRequest) {
+  const clientIp = getClientIp(request);
+  const rl = checkRateLimit(`dig-route:${clientIp}`, RATE_LIMIT);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)),
+        },
+      }
+    );
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const domain = searchParams.get('domain')?.trim() || '';

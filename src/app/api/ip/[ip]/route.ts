@@ -3,6 +3,9 @@ import net from 'net';
 import { fetchIpDetails } from '@/services/ipService';
 import { resolveReverseDns, resolveDomainToIp, fetchDnsRecords } from '@/services/dnsService';
 import { fetchWhoisData } from '@/services/whoisService';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+
+const RATE_LIMIT = { limit: 30, windowMs: 60_000 };
 
 /**
  * GET handler for /api/ip/[ip]
@@ -13,6 +16,20 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ ip: string }> }
 ) {
+  const clientIp = getClientIp(request);
+  const rl = checkRateLimit(`ip-route:${clientIp}`, RATE_LIMIT);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)),
+        },
+      }
+    );
+  }
+
   try {
     const { ip } = await params;
     const decodedInput = decodeURIComponent(ip).trim();

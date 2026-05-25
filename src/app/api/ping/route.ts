@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { spawnSystemPing, isValidPingTarget, performTcpPing } from '@/services/pingService';
 import { ChildProcessWithoutNullStreams } from 'child_process';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+
+const RATE_LIMIT = { limit: 5, windowMs: 60_000 };
 
 /**
  * GET /api/ping
@@ -10,6 +13,20 @@ import { ChildProcessWithoutNullStreams } from 'child_process';
  * Returns a text/event-stream (SSE) yielding real-time output.
  */
 export async function GET(request: NextRequest) {
+  const clientIp = getClientIp(request);
+  const rl = checkRateLimit(`ping-route:${clientIp}`, RATE_LIMIT);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)),
+        },
+      }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const target = searchParams.get('target')?.trim() || '';
 
