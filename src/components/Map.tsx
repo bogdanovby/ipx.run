@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, AttributionControl } from 'react-leaflet';
 import L from 'leaflet';
 
 interface MapProps {
@@ -91,9 +91,11 @@ export default function Map({ lat, lon, city, country }: MapProps) {
         zoom={11}
         scrollWheelZoom={false}
         zoomControl={true}
+        attributionControl={false} // Disable default so we can hide 'Leaflet' logo and links
         className="w-full h-full absolute inset-0 z-10"
       >
-        <TileLayer url={tileUrl} attribution={attribution} />
+        <TileLayer url={tileUrl} />
+        <AttributionControl prefix={false} position="bottomright" />
         <Marker position={[lat, lon]} icon={customMarkerIcon}>
           <Popup className="custom-popup">
             <div className="text-center font-sans p-1 text-slate-950 dark:text-slate-950">
