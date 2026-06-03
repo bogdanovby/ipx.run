@@ -41,15 +41,16 @@ export default function WhoisCard({ whois, queriedDomain, targetIp }: WhoisCardP
 
   const { parsed, raw } = whois;
 
-  // Format Date safely
+  // Format Date safely as ISO (YYYY-MM-DD)
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return 'N/A';
     try {
-      return new Date(dateStr).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     } catch {
       return dateStr;
     }

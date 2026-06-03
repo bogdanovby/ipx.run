@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Network, Search, AlertCircle, RefreshCw, Cpu, Database, ShieldCheck, Activity, Terminal } from 'lucide-react';
+import { Network, Search, AlertCircle, RefreshCw, Cpu, Database, ShieldCheck, Activity, Terminal, BarChart3 } from 'lucide-react';
 import SearchBar from './SearchBar';
 import ThemeToggle from './ThemeToggle';
 import ConnectionCard from './Cards/ConnectionCard';
@@ -14,6 +14,7 @@ import DnsCard from './Cards/DnsCard';
 import WhoisCard from './Cards/WhoisCard';
 import PingCard from './Cards/PingCard';
 import DigCard from './Cards/DigCard';
+import WebAnalyzer from './WebAnalyzer';
 import { IpDetails } from '@/services/ipService';
 
 // Lazy-load Leaflet Map to completely bypass Server-Side rendering and avoid window errors
@@ -38,7 +39,7 @@ export default function Dashboard({ initialData, userAgent }: DashboardProps) {
   const [data, setData] = useState<IpDetails>(initialData);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'geolocation' | 'dns' | 'whois' | 'ping' | 'dig'>('geolocation');
+  const [activeTab, setActiveTab] = useState<'geolocation' | 'dns' | 'whois' | 'ping' | 'dig' | 'web-analyzer'>('geolocation');
 
   const handleSearch = async (searchedIp: string) => {
     if (!searchedIp) return;
@@ -227,6 +228,17 @@ export default function Dashboard({ initialData, userAgent }: DashboardProps) {
             <Terminal className="w-4 h-4 shrink-0" />
             Dig DNS
           </button>
+          <button
+            onClick={() => setActiveTab('web-analyzer')}
+            className={`justify-center px-4 py-2.5 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
+              activeTab === 'web-analyzer'
+                ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
+                : 'text-text-muted hover:text-foreground hover:bg-border-muted/20'
+            }`}
+          >
+            <BarChart3 className="w-4 h-4 shrink-0" />
+            Web Analyzer
+          </button>
         </div>
 
         {/* Tab Panel Transitions */}
@@ -355,6 +367,18 @@ export default function Dashboard({ initialData, userAgent }: DashboardProps) {
               className="glass-card rounded-2xl p-6 md:p-8"
             >
               <DigCard initialDomain={data.isDomain ? (data.queriedDomain || '') : data.ip} />
+            </motion.div>
+          )}
+
+          {activeTab === 'web-analyzer' && (
+            <motion.div
+              key="web-analyzer"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.2 }}
+            >
+              <WebAnalyzer initialDomain={data.isDomain ? (data.queriedDomain || '') : undefined} initialData={data} />
             </motion.div>
           )}
         </AnimatePresence>
